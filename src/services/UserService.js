@@ -6,29 +6,28 @@ class UserService extends BaseService {
         super(UserModel)
     }
 
-    getChats(where){
-        return super.findOne(where).populate({
+    getChats(user){
+        return super.findById(user._id).populate({
             path: 'chat',
             populate: [
                 {
                    path: 'from_user_id',
-                   select: 'username' 
+                   select: 'username _id' 
                 },
                 {
                     path: 'to_user_id',
-                    select: 'username' 
+                    select: 'username _id' 
                 },
                 {
                     path: 'messages',
                     populate: {
                         path: 'sender_id',
-                        select: 'username'
+                        select: 'username _id'
                     }
                 }
             ]
         })
     }
-
 }
 
 module.exports = new UserService()

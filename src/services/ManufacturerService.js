@@ -11,9 +11,9 @@ class ManufacturerService extends BaseService{
         if (!manufacturer.products)
             manufacturer.products = []
         
-        product.manufacturer = manufacturer
+        product.manufacturer = manufacturer._id
 
-        manufacturer.products.push(product)
+        manufacturer.products.push(product._id)
         super.update(manufacturer._id, manufacturer)
     }
 
@@ -33,13 +33,13 @@ class ManufacturerService extends BaseService{
                 populate: [
                     {
                         path: 'from_user_id',
-                        select: 'username' 
+                        select: 'username _id' 
                     },
                     {
                         path: 'to_manufacturer_id',
                         populate: {
                             path: 'user_id',
-                            select: 'username'
+                            select: 'username _id'
                         }
                     },
                     {

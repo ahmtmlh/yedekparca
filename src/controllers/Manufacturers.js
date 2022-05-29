@@ -3,8 +3,8 @@ const ManufacturerService = require('../services/ManufacturerService')
 
 class ManufacturerController {
     
-    getProducts(req, res){
-
+    getProducts(req, res){  
+        
     }
 
     addProduct(req, res){
@@ -16,7 +16,12 @@ class ManufacturerController {
         ManufacturerService.getOffers(manufacturer)
             .then(manufacturerWithOffers => {
                 
-                if (!manufacturerWithOffers || !manufacturerWithOffers.offers || manufacturerWithOffers.offers.lenght == 0){
+                if (!manufacturerWithOffers){
+                    res.status(hs.NOT_FOUND).send({message: 'Manufacturer not found'})
+                    return
+                }
+
+                if (!manufacturerWithOffers.offers || manufacturerWithOffers.offers.lenght == 0){
                     res.status(hs.NOT_FOUND).send({message: 'No offer has been found'})
                     return
                 }
@@ -27,7 +32,6 @@ class ManufacturerController {
             .catch(err => {
                 res.status(hs.INTERNAL_SERVER_ERROR).send(err)
             })
-
     }
 
 }
