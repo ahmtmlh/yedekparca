@@ -4,7 +4,11 @@ const cors = require('cors')
 
 const config = require('./config')
 const loaders = require('./loaders')
-const {UserRoutes} = require('./routes')
+const {UserRoutes, ChatRoutes} = require('./routes')
+
+// I suspect this will not be required once the chat route is exported, which exports chat service, which export 
+// chat model
+const ChatModel = require('./models/Chat')
 
 
 config()
@@ -24,6 +28,14 @@ app.use(
 app.listen(process.env.PORT, () => {
     console.log(`Application started running on ${process.env.PORT}`)
     app.use('/users', UserRoutes)
+    app.use('/chat', ChatRoutes)
+
+    app.use((req, res, next) => {
+        const error = new Error("Böyle bir EP Bulunmamaktadır..");
+        error.status = 404;
+        next(error);
+    });
+
 })
 
 console.log('Hello World!')

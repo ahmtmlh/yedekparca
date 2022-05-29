@@ -5,7 +5,7 @@ const {authenticateToken, authenticateTokenWithUserType} = require("../middlewar
 
 const router = express.Router();
 
-router.route('/test').post((req, res) =>{
+router.route('/test').post((req, res) => {
     
     console.log(req.body)
     res.status(200).send('Hello world!')
@@ -13,5 +13,6 @@ router.route('/test').post((req, res) =>{
 
 router.route('/login').post(Users.login)
 router.route('/register').post(Users.signUp)
+router.route('/chats').get(Users.getChats)
 
 module.exports = router

@@ -8,7 +8,7 @@ class UserService extends BaseService {
 
     getChats(user){
         return super.findById(user._id).populate({
-            path: 'chat',
+            path: 'chats',
             populate: [
                 {
                    path: 'from_user_id',

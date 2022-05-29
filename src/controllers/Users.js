@@ -62,6 +62,8 @@ class UserController {
                     return
                 }
 
+                console.log(user)
+
                 res.status(hs.OK).send(user.chats)
             })
             .catch(err => {

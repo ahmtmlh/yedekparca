@@ -18,6 +18,10 @@ const connectDB = async () => {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   });
+
+  if (process.env.MONGOOSE_DEBUG_ENABLED === "true"){
+    Mongoose.set('debug', true)
+  }
 };
 
 module.exports = {
