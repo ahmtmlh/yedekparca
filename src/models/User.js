@@ -5,7 +5,8 @@ const UserSchema = new Mongoose.Schema(
         first_name: String,
         last_name: String,
         user_type: String,
-        email: String,
+        email: {type: String, unique: true},
+        username: {type: String, unique: true},
         password: String,
         addresses: [
             {
@@ -31,7 +32,8 @@ const UserSchema = new Mongoose.Schema(
             {
                 type: Mongoose.Types.ObjectId,
                 ref: 'chat'
-            }
+            },
+            {required: false}
         ]
     },
     {timestamps: true, versionKey: false}

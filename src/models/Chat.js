@@ -15,11 +15,7 @@ const ChatSchema = new Mongoose.Schema(
                 message_type: String,
                 message: String,
                 attachments: [String],
-                from_user: {
-                    type: Mongoose.Types.ObjectId,
-                    ref: 'user'
-                },
-                to_user: {
+                sender_id: {
                     type: Mongoose.Types.ObjectId,
                     ref: 'user'
                 },

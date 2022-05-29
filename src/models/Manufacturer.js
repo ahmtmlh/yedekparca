@@ -13,13 +13,15 @@ const ManufacturerSchema = new Mongoose.Schema(
             {
                 type: Mongoose.Types.ObjectId,
                 ref: 'product'
-            }
+            },
+            {required: false}
         ],
         offers: [
             {
                 type: Mongoose.Types.ObjectId,
                 ref: 'offer'
-            }
+            },
+            {required: false}
         ],
         rating: Number,
         rate_count: Number,
