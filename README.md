@@ -1,0 +1,2 @@
+# yedekparca
+Yedek parçaçı geldi
