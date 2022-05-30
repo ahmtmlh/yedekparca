@@ -7,7 +7,8 @@ const ManufacturerSchema = new Mongoose.Schema(
         categories: [String],
         user_id: {
             type: Mongoose.Types.ObjectId,
-            ref: 'user'
+            ref: 'user',
+            unique: true
         },
         products: [
             {

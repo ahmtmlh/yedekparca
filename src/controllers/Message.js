@@ -3,13 +3,11 @@ const User = require('../models/User')
 const UserService = require('../services/UserService')
 const ChatService = require('../services/ChatService')
 
-
 async function updateUsers(chat, fromUser, toUser){
     toUser.chats.push(chat._id)
     fromUser.chats.push(chat._id)
 
-    await UserService.update(toUser._id, toUser)
-    await UserService.update(fromUser._id, fromUser)
+    await Promise.all([UserService.update(toUser._id, toUser), UserService.update(fromUser._id, fromUser)])
 }
 
 function createMessage(res, chat, fromUser, toUser){
@@ -48,17 +46,10 @@ class MessageController {
     async sendMessage(req, res){
 
         const message = req.body.message
-        const fromUserId = req.body.from_user_id
+        const fromUserId = req.user._id
         const toUserId = req.body.to_user_id
 
-        const fromUser = await UserService.findById(fromUserId).catch(err => res.status(hs.INTERNAL_SERVER_ERROR).send(err))
         const toUser = await UserService.findById(toUserId).catch(err => res.status(hs.INTERNAL_SERVER_ERROR).send(err))
-
-        if (!fromUser){
-            res.status(hs.NOT_FOUND).send({message: 'Sender user not found'})
-            return
-        }
-
         if (!toUser){
             res.status(hs.NOT_FOUND).send({message: 'Receiver user not found'})
             return
