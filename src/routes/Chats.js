@@ -8,6 +8,6 @@ const router = express.Router();
 
 router.route('/sendmessage').post(authenticateToken, validate(ChatValidations.sendMessage), MessageController.sendMessage)
 router.route('/delete').delete(authenticateToken, validate(ChatValidations.removeChat), MessageController.removeChat)
-router.route('/markseen').patch(MessageController.markMessageAsSeen)
+router.route('/markseen').patch(authenticateToken, validate(ChatValidations.markAsSeen), MessageController.markMessageAsSeen)
 
 module.exports = router

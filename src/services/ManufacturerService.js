@@ -7,28 +7,19 @@ class ManufacturerService extends BaseService{
     }
 
     addProduct(manufacturer, product){
-
-        if (!manufacturer.products)
-            manufacturer.products = []
-        
-        product.manufacturer = manufacturer._id
-
         manufacturer.products.push(product._id)
-        super.update(manufacturer._id, manufacturer)
+
+        return super.update(manufacturer._id, manufacturer)
     }
 
-    getProducts(manufacturer){
-        return super.findById(manufacturer._id).populate({
-            path: 'products',
-            populate: {
-                path: 'manufacturer',
-                select: '_id'
-            }
+    getProducts(user){
+        return super.findOne({'user_id': user._id}).populate({
+            path: 'products'
         })
     }
 
-    getOffers(manufacturer){
-        return super.findById(manufacturer._id).populate({
+    getOffers(user){
+        return super.findOne({'user_id': user._id}).populate({
                 path: 'offer',
                 populate: [
                     {

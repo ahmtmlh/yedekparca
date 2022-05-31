@@ -22,12 +22,13 @@ class UserService extends BaseService {
                     path: 'messages',
                     populate: {
                         path: 'sender_id',
-                        select: 'username _id'
+                        select: '_id'
                     }
                 }
             ]
         })
     }
+
 }
 
 module.exports = new UserService()

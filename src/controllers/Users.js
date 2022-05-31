@@ -1,7 +1,8 @@
 const hs = require('http-status')
 const {passwordToHash, generateJWTAccessToken, generateJWTRefreshToken} = require('../scripts/jwtUtils')
-const uuid = require('uuid')
 const UserService = require('../services/UserService')
+const ManufacturerService = require('../services/ManufacturerService')
+const UserTypes = require('../constants/UserType')
 
 class UserController {
 
@@ -13,6 +14,12 @@ class UserController {
                 if (!createdUser){
                     res.status(hs.INTERNAL_SERVER_ERROR).send({error: 'Unexpected error while creating user...'})
                     return
+                }
+
+                if (user.user_type == UserTypes.manufacturer){
+                    // Add new manufacturer
+                } else if (user.user_type == UserTypes.company){
+
                 }
 
                 res.status(hs.OK).send(createdUser);

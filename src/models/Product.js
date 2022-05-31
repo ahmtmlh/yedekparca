@@ -10,7 +10,8 @@ const ProductSchema = new Mongoose.Schema(
         categories: [String],
         manufacturer: {
             type: Mongoose.Types.ObjectId,
-            ref: 'manufacturer'
+            ref: 'manufacturer',
+            required: true
         }
     },
     {timestamps: true, versionKey: false}

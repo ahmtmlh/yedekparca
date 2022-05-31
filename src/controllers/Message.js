@@ -124,20 +124,32 @@ class MessageController {
             })
     }
 
+    checkMessageForUser(res, req, next){
+
+    }
+
     markMessageAsSeen(req, res){
         const chatId = req.body.chat_id
         const messageId = req.body.message_id
+        const user = req.user
 
         ChatService.findById(chatId)
             .then(chat => {
+
                 if (!chat){
                     res.status(hs.NOT_FOUND).send({message: 'Chat by id is not found'})
                     return
                 }
 
-                ChatService.setMessageRead(messageId)
-                    .then(_ignore => {
-                        res.status(hs.OK).send()
+                ChatService.setMessageRead(messageId, user._id)
+                    .then(result => {
+                        console.log(result)
+
+                        if (result.modifiedCount > 0){
+                            res.status(hs.OK).send()
+                        } else {
+                            res.status(hs.NOT_FOUND).send({error: 'Messsage not found or is already seen'})
+                        }
                     })
                     .catch(err => {
                         res.status(hs.INTERNAL_SERVER_ERROR).send(err)

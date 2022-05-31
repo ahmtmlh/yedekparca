@@ -1,19 +1,70 @@
 const hs = require('http-status')
+const { manufacturer } = require('../constants/UserType')
 const ManufacturerService = require('../services/ManufacturerService')
+const ProductService = require('../services/ProductService')
+
 
 class ManufacturerController {
     
     getProducts(req, res){  
-        
+        ManufacturerService.getProducts(req.user)
+            .then(manufacturer => {
+                
+                if (!manufacturer){
+                    res.status(hs.NOT_FOUND).send({error: 'Manufacturer not found'})
+                    return
+                }
+
+                if (manufacturer.products.lenght == 0){
+                    res.status(hs.NOT_FOUND).send({error: 'No products found'})
+                    return
+                }
+
+                res.status(hs.OK).send(manufacturer.products)
+            })
+            .catch(err => {
+                res.status(hs.INTERNAL_SERVER_ERROR).send(err)
+            })
     }
 
     addProduct(req, res){
+        ManufacturerService.findOne({'user_id': req.user._id})
+            .then(manufacturer => {
+                if (!manufacturer){
+                    res.status(hs.NOT_FOUND).send({error: 'Manufacturer not found'})
+                    return
+                }
+                
+                // Manufacturer is found, create a new product
+                const product = {
+                    ...req.body,
+                    'manufacturer': manufacturer._id,
+                }
 
+                ProductService.create(product)
+                    .then(createdProduct => {
+                        if (!createdProduct){
+                            res.status(hs.INTERNAL_SERVER_ERROR).send({error: 'Error while creating product'})
+                            return
+                        }
+
+                        res.status(hs.OK).send()
+                    })
+                    .catch(err => {
+                        res.status(hs.INTERNAL_SERVER_ERROR).send(err)
+                    })
+            })
+            .catch(err => {
+                res.status(hs.INTERNAL_SERVER_ERROR).send(err)
+            })
+    }
+
+    addMediaToProduct(req, res){
+        
     }
 
     getOffers(req, res){
-        const manufacturer = req.body
-        ManufacturerService.getOffers(manufacturer)
+        ManufacturerService.getOffers(req.user)
             .then(manufacturerWithOffers => {
                 
                 if (!manufacturerWithOffers){
@@ -21,7 +72,7 @@ class ManufacturerController {
                     return
                 }
 
-                if (!manufacturerWithOffers.offers || manufacturerWithOffers.offers.lenght == 0){
+                if (manufacturerWithOffers.offers.lenght == 0){
                     res.status(hs.NOT_FOUND).send({message: 'No offer has been found'})
                     return
                 }
