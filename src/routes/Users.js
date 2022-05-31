@@ -14,6 +14,6 @@ router.route('/test').post((req, res) => {
 
 router.route('/login').post(validate(UserValidations.loginUser), Users.login)
 router.route('/register').post(validate(UserValidations.registerUser), Users.signUp)
-router.route('/chats').get(authenticateToken, validate(UserValidations.getUserChats), Users.getChats)
+router.route('/chats').get(authenticateToken, Users.getChats)
 
 module.exports = router

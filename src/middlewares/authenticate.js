@@ -11,7 +11,8 @@ const authenticateToken = (req, res, next) => {
         if (err) 
             return res.status(httpStatus.FORBIDDEN).send(err)
         
-        req.user = user
+        req.user = user._doc
+        //console.log('User: ', req.user)
         next()
     })
 }

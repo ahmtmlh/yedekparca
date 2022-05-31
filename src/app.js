@@ -31,7 +31,7 @@ app.listen(process.env.PORT, () => {
     app.use('/chat', ChatRoutes)
 
     app.use((req, res, next) => {
-        const error = new Error("Böyle bir EP Bulunmamaktadır..");
+        const error = new Error('No endpoint is found');
         error.status = 404;
         next(error);
     });

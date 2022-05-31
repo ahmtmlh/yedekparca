@@ -29,7 +29,7 @@ const registerUser = Joi.object(
     {
         first_name: Joi.string().required().min(2),
         last_name: Joi.string().required().min(2),
-        user_type: Joi.string().valid(...Object.values(UserTypes)),
+        user_type: Joi.string().valid(...Object.values(UserTypes)).required(),
         email: Joi.string().required().email(),
         username: Joi.string().required().min(4).max(30),
         password: Joi.string().required().min(5).max(30),
@@ -47,12 +47,9 @@ const loginUser = Joi.object(
     }
 ).xor('username', 'email')
 
-const getUserChats = Joi.object({_id: Joi.objectId().required()})
-
 class UserValidations{
 
     constructor(){
-        this.getUserChats = getUserChats
         this.loginUser = loginUser
         this.registerUser = registerUser
     }

@@ -18,6 +18,12 @@ class UserController {
                 res.status(hs.OK).send(createdUser);
 
             }).catch(err => {
+
+                if (err.code == 11000){
+                    res.status(hs.BAD_REQUEST).send({error: "User already exists"})
+                    return
+                }
+
                 res.status(hs.INTERNAL_SERVER_ERROR).send(err)
             })
     }
@@ -49,7 +55,7 @@ class UserController {
     }
 
     getChats(req, res){
-        UserService.getChats(req.body)
+        UserService.getChats(req.user)
             .then(user => {
 
                 if (!user){

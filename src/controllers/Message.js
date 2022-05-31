@@ -49,12 +49,19 @@ class MessageController {
         const fromUserId = req.user._id
         const toUserId = req.body.to_user_id
 
-        const toUser = await UserService.findById(toUserId).catch(err => res.status(hs.INTERNAL_SERVER_ERROR).send(err))
+        if (fromUserId == toUserId){
+            res.status(hs.BAD_REQUEST).send({message: 'Sender ID and receiver ID can\'t should be different'})
+            return
+        }
+
+        const toUser = await UserService.findById(toUserId).catch(err => {res.status(hs.INTERNAL_SERVER_ERROR).send(err)})
         if (!toUser){
             res.status(hs.NOT_FOUND).send({message: 'Receiver user not found'})
             return
         }
 
+        const fromUser = await UserService.findById(fromUserId).catch(err => res.status(hs.INTERNAL_SERVER_ERROR).send(err))
+        
         ChatService.findMessage(fromUser._id, toUser._id)
             .then(chat => {
 
@@ -112,7 +119,32 @@ class MessageController {
 
             })
             .catch(err=> {
-                console.log(err)
+                //console.log(err)
+                res.status(hs.INTERNAL_SERVER_ERROR).send(err)
+            })
+    }
+
+    markMessageAsSeen(req, res){
+        const chatId = req.body.chat_id
+        const messageId = req.body.message_id
+
+        ChatService.findById(chatId)
+            .then(chat => {
+                if (!chat){
+                    res.status(hs.NOT_FOUND).send({message: 'Chat by id is not found'})
+                    return
+                }
+
+                ChatService.setMessageRead(messageId)
+                    .then(_ignore => {
+                        res.status(hs.OK).send()
+                    })
+                    .catch(err => {
+                        res.status(hs.INTERNAL_SERVER_ERROR).send(err)
+                    })
+
+            })
+            .catch(err => {
                 res.status(hs.INTERNAL_SERVER_ERROR).send(err)
             })
     }
