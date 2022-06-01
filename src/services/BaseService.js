@@ -17,9 +17,6 @@ class BaseService {
     updateQuery(query, filter){
         return this.BaseModel.updateOne(query, filter)
     }
-    updateManyQuery(query, filter){
-        return this.BaseModel.updateOne(query, filter)
-    }
     update(id, data) {
         return this.BaseModel.findByIdAndUpdate(id, data, { new: true })
     }

@@ -16,13 +16,36 @@ class UserController {
                     return
                 }
 
-                if (user.user_type == UserTypes.manufacturer){
+                createdUser.password = undefined
+
+                if (createdUser.user_type == UserTypes.manufacturer){
                     // Add new manufacturer
-                } else if (user.user_type == UserTypes.company){
+                    const manufacturerData = {
+                        user_id: createdUser._id
+                    }
 
+                    ManufacturerService.create(manufacturerData)
+                        .then(manufacturer => {
+
+                            createdUser = {
+                                ...createdUser._doc,
+                                manufacturer_id: manufacturer._id
+                            }
+
+                            res.status(hs.OK).send(createdUser);                            
+                        })
+                        .catch(err => {
+                            console.log(err)
+                            UserService.delete(createdUser._id)
+                            res.status(hs.INTERNAL_SERVER_ERROR).send(err)
+                            return
+                        })
+
+                } else if (createdUser.user_type == UserTypes.company){
+
+                } else {
+                    res.status(hs.OK).send(createdUser);
                 }
-
-                res.status(hs.OK).send(createdUser);
 
             }).catch(err => {
 

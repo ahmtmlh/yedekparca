@@ -14,7 +14,6 @@ function createMessage(res, chat, fromUser, toUser){
     ChatService.create(chat)
         .then(createdChat => {
             updateUsers(createdChat, fromUser, toUser).then(() => res.status(hs.OK).send(createdChat.messages))
-            
         })
         .catch(err => {
             console.log(err)
@@ -46,10 +45,10 @@ class MessageController {
     async sendMessage(req, res){
 
         const message = req.body.message
-        const fromUserId = req.user._id
         const toUserId = req.body.to_user_id
+        const fromUser = req.user
 
-        if (fromUserId == toUserId){
+        if (fromUser._id.toString() == toUserId){
             res.status(hs.BAD_REQUEST).send({message: 'Sender ID and receiver ID can\'t should be different'})
             return
         }
@@ -60,9 +59,7 @@ class MessageController {
             return
         }
 
-        const fromUser = await UserService.findById(fromUserId).catch(err => res.status(hs.INTERNAL_SERVER_ERROR).send(err))
-        
-        ChatService.findMessage(fromUser._id, toUser._id)
+        ChatService.findChat(fromUser._id, toUser._id)
             .then(chat => {
 
                 let messageModel = {
@@ -76,8 +73,7 @@ class MessageController {
 
                 if (!chat){
                     createMessage(res, {
-                        from_user_id: fromUser._id,
-                        to_user_id: toUser._id,
+                        participants: [fromUser._id, toUser._id],
                         messages: [messageModel]
                     }, fromUser, toUser)
 
@@ -99,7 +95,11 @@ class MessageController {
     }
 
     removeChat(req, res){
-        ChatService.findById(req.body.chat)
+        ChatService.findOne(
+            {
+                _id: req.body.chat_id, 
+                participants: req.user._id
+            })
             .then(chat=> {
 
                 if (!chat){
@@ -127,40 +127,6 @@ class MessageController {
     checkMessageForUser(res, req, next){
 
     }
-
-    markMessageAsSeen(req, res){
-        const chatId = req.body.chat_id
-        const messageId = req.body.message_id
-        const user = req.user
-
-        ChatService.findById(chatId)
-            .then(chat => {
-
-                if (!chat){
-                    res.status(hs.NOT_FOUND).send({message: 'Chat by id is not found'})
-                    return
-                }
-
-                ChatService.setMessageRead(messageId, user._id)
-                    .then(result => {
-                        console.log(result)
-
-                        if (result.modifiedCount > 0){
-                            res.status(hs.OK).send()
-                        } else {
-                            res.status(hs.NOT_FOUND).send({error: 'Messsage not found or is already seen'})
-                        }
-                    })
-                    .catch(err => {
-                        res.status(hs.INTERNAL_SERVER_ERROR).send(err)
-                    })
-
-            })
-            .catch(err => {
-                res.status(hs.INTERNAL_SERVER_ERROR).send(err)
-            })
-    }
-
 }
 
 module.exports = new MessageController()

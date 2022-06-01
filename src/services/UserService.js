@@ -11,12 +11,8 @@ class UserService extends BaseService {
             path: 'chats',
             populate: [
                 {
-                   path: 'from_user_id',
+                   path: 'participants',
                    select: 'username _id' 
-                },
-                {
-                    path: 'to_user_id',
-                    select: 'username _id' 
                 },
                 {
                     path: 'messages',

@@ -3,14 +3,12 @@ const UserModel = require('./User')
 
 const ChatSchema = new Mongoose.Schema(
     {
-        from_user_id: {
-            type: Mongoose.Types.ObjectId,
-            ref: 'user'
-        },
-        to_user_id: {
-            type: Mongoose.Types.ObjectId,
-            ref: 'user'
-        },
+        participants: [
+            {
+                type: Mongoose.Types.ObjectId,
+                ref: 'user'
+            }
+        ],
         messages: [
             {
                 message_type: String,
@@ -20,8 +18,7 @@ const ChatSchema = new Mongoose.Schema(
                     type: Mongoose.Types.ObjectId,
                     ref: 'user'
                 },
-                created_at: Date,
-                seen_by_receiver: Boolean
+                created_at: Date
             }
         ],
         created_at: Date

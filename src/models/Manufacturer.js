@@ -8,7 +8,8 @@ const ManufacturerSchema = new Mongoose.Schema(
         user_id: {
             type: Mongoose.Types.ObjectId,
             ref: 'user',
-            unique: true
+            unique: true,
+            required: true
         },
         products: [
             {

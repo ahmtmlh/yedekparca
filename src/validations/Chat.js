@@ -14,20 +14,13 @@ const sendMessage = Joi.object(
     }
 )
 
-const removeChat = Joi.object({_id: Joi.objectId().required()})
+const removeChat = Joi.object({chat_id: Joi.objectId().required()})
 
-const markAsSeen = Joi.object(
-    {
-        chat_id: Joi.objectId().required(),
-        message_id: Joi.objectId().required()
-    }
-)
 
 class ChatValidations{
     constructor(){
         this.sendMessage = sendMessage
         this.removeChat = removeChat
-        this.markAsSeen = markAsSeen
     }
 }
 
