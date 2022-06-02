@@ -1,5 +1,4 @@
 const hs = require('http-status')
-const { manufacturer } = require('../constants/UserType')
 const ManufacturerService = require('../services/ManufacturerService')
 const ProductService = require('../services/ProductService')
 
