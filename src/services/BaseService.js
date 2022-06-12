@@ -14,14 +14,14 @@ class BaseService {
     findOne(where) {
         return this.BaseModel.findOne(where)
     }
-    updateQuery(query, filter){
-        return this.BaseModel.updateOne(query, filter)
-    }
     update(id, data) {
         return this.BaseModel.findByIdAndUpdate(id, data, { new: true })
     }
     updateWhere(where, data) {
         return this.BaseModel.findOneAndUpdate(where, data, { new: true })
+    }
+    updateQuery(query, filter){
+        return this.BaseModel.updateOne(query, filter)
     }
     delete(id) {
         return this.BaseModel.findByIdAndDelete(id)

@@ -7,11 +7,15 @@ class ProductService extends BaseService{
     }
 
     findByIdAndManufacturer(id, manufacturerId){
-        return super.BaseModel.findOne({'manufacturer': manufacturerId, '_id': id})
+        return super.findOne({'manufacturer': manufacturerId, '_id': id})
     }
 
     findByIdWithMedia(id){
-        return super.BaseModel.findById(id).populate('media')
+        return super.findById(id).populate('media')
+    }
+
+    findByNameAndManufacturer(name, manufacturerId){
+        return super.findOne({'name': name, 'manufacturer': manufacturerId})
     }
 }
 

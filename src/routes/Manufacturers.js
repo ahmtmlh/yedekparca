@@ -8,5 +8,6 @@ const router = express.Router();
 
 router.route('/addproduct').put(authenticateTokenWithUserType(UserTypes.manufacturer), ManufacturerController.addProduct)
 router.route('/').patch(authenticateTokenWithUserType(UserTypes.manufacturer), ManufacturerController.updateManufacturer)
+router.route('/products').get(authenticateTokenWithUserType(UserTypes.manufacturer), ManufacturerController.getProducts)
 
 module.exports = router

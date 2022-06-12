@@ -29,7 +29,10 @@ const authenticateTokenWithUserType = (userType) => (req, res, next) => {
     JWT.verify(token, process.env.ACCESS_TOKEN_SECRET_KEY, (err, user) => {
         if (err) 
             return res.status(httpStatus.FORBIDDEN).send(err)
-           
+        
+        user = user._doc
+
+        console.log(user)
         if (user.user_type !== userType)
             return res.status(httpStatus.FORBIDDEN).send({error: 'Required access level is not met'})
 

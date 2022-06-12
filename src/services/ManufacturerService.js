@@ -7,9 +7,7 @@ class ManufacturerService extends BaseService{
     }
 
     addProduct(manufacturer, product){
-        manufacturer.products.push(product._id)
-
-        return super.update(manufacturer._id, manufacturer)
+        return super.updateQuery({'_id': manufacturer._id}, {$push: {products: product}})
     }
 
     getProducts(user){

@@ -1,4 +1,5 @@
 const Mongoose = require('mongoose')
+const ManufacturerModel = require('./Manufacturer')
 
 const ProductSchema = new Mongoose.Schema(
     {
@@ -18,5 +19,10 @@ const ProductSchema = new Mongoose.Schema(
     },
     {timestamps: true, versionKey: false}
 )
+
+ProductSchema.post('findOneAndDelete', { query: true, document: false }, (doc) => {
+    const id = doc._id
+    ManufacturerModel.updateMany({}, { $pullAll: { products: [{_id: id}] } } ).exec()
+})
 
 module.exports = Mongoose.model('product', ProductSchema)

@@ -1,6 +1,7 @@
 const express = require('express')
 const {authenticateToken, authenticateTokenWithUserType} = require('../middlewares/authenticate')
 const ProductController = require('../controllers/Products')
+const UserTypes = require('../constants/UserType')
 
 const router = express.Router();
 

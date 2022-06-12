@@ -50,14 +50,17 @@ class ProductController{
                                 res.status(hs.OK).send({message: 'Delete product is successful'})
                             })
                             .catch(err => {
+                                console.log(err)
                                 res.status(hs.INTERNAL_SERVER_ERROR).send({error: err})
                             })
                     })
                     .catch(err => {
+                        console.log(err)
                         res.status(hs.INTERNAL_SERVER_ERROR).send({error: err})
                     })
             })
             .catch(err => {
+                console.log(err)
                 res.status(hs.INTERNAL_SERVER_ERROR).send({error: err})
             })
     }
