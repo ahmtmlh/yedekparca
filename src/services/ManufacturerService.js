@@ -20,7 +20,7 @@ class ManufacturerService extends BaseService{
 
     getOffers(user){
         return super.findOne({'user_id': user._id}).populate({
-                path: 'offer',
+                path: 'offers',
                 populate: [
                     {
                         path: 'from_user_id',
@@ -43,6 +43,10 @@ class ManufacturerService extends BaseService{
                 ]
             }
         )
+    }
+    
+    findByUser(user){
+        return super.findOne({'user_id': user._id})
     }
 
 }

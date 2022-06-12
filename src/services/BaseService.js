@@ -24,7 +24,7 @@ class BaseService {
         return this.BaseModel.findOneAndUpdate(where, data, { new: true })
     }
     delete(id) {
-        return this.BaseModel.findOneAndDelete({_id: id})
+        return this.BaseModel.findByIdAndDelete(id)
     }
 }
   

@@ -5,6 +5,34 @@ const ProductService = require('../services/ProductService')
 
 class ManufacturerController {
     
+
+    updateManufacturer(req, res){
+        ManufacturerService.findByUser(req.user)
+            .then(manufacturer => {
+                if (!manufacturer){
+                    res.status(hs.NOT_FOUND).send({message: 'Manufacturer with id is not found'})
+                    return
+                }
+
+                ManufacturerService.update(manufacturer._id, req.body)
+                    .then(updatedManufacturer => {
+
+                        if (!updatedManufacturer){
+                            res.status(hs.INTERNAL_SERVER_ERROR).send({error: 'Unknown error while updating manufacturer information'})
+                            return
+                        }
+
+                        res.status(hs.OK).send(updatedManufacturer)
+                    })
+                    .catch(err => {
+                        res.status(hs.INTERNAL_SERVER_ERROR).send({error: err})
+                    })
+            })
+            .catch(err => {
+                res.status(hs.INTERNAL_SERVER_ERROR).send({error: err})
+            })
+    }
+
     getProducts(req, res){  
         ManufacturerService.getProducts(req.user)
             .then(manufacturer => {
@@ -27,7 +55,7 @@ class ManufacturerController {
     }
 
     addProduct(req, res){
-        ManufacturerService.findOne({'user_id': req.user._id})
+        ManufacturerService.findByUser(req.user)
             .then(manufacturer => {
                 if (!manufacturer){
                     res.status(hs.NOT_FOUND).send({error: 'Manufacturer not found'})
@@ -47,7 +75,7 @@ class ManufacturerController {
                             return
                         }
 
-                        res.status(hs.OK).send()
+                        res.status(hs.OK).send({message: 'Create product OK'})
                     })
                     .catch(err => {
                         res.status(hs.INTERNAL_SERVER_ERROR).send(err)
@@ -56,10 +84,6 @@ class ManufacturerController {
             .catch(err => {
                 res.status(hs.INTERNAL_SERVER_ERROR).send(err)
             })
-    }
-
-    addMediaToProduct(req, res){
-        
     }
 
     getOffers(req, res){
@@ -82,8 +106,7 @@ class ManufacturerController {
             .catch(err => {
                 res.status(hs.INTERNAL_SERVER_ERROR).send(err)
             })
-    }
-
+    }    
 }
 
 

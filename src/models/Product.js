@@ -5,8 +5,10 @@ const ProductSchema = new Mongoose.Schema(
         name: String,
         description: String,
         estimated_price_range: String,
+        estimated_price_range_visible: Boolean,
         estimated_manufacturing_time: String,
-        photos: [String],
+        estimated_manufacturing_time_visible: Boolean,
+        media: [String],
         categories: [String],
         manufacturer: {
             type: Mongoose.Types.ObjectId,
