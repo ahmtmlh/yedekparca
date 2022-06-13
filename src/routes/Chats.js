@@ -7,6 +7,6 @@ const validate = require('../middlewares/validate')
 const router = express.Router();
 
 router.route('/sendmessage').post(authenticateToken, validate(ChatValidations.sendMessage), MessageController.sendMessage)
-router.route('/').delete(authenticateToken, validate(ChatValidations.removeChat), MessageController.removeChat)
+router.route('/:chat_id').delete(authenticateToken, validate(ChatValidations.removeChat, 'params'), MessageController.removeChat)
 
 module.exports = router

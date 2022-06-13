@@ -97,7 +97,7 @@ class MessageController {
     removeChat(req, res){
         ChatService.findOne(
             {
-                _id: req.body.chat_id, 
+                _id: req.params.chat_id, 
                 participants: req.user._id
             })
             .then(chat=> {

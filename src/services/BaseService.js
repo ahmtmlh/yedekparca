@@ -2,6 +2,9 @@ class BaseService {
     constructor(BaseModel) {
         this.BaseModel = BaseModel
     }
+    count(where){
+        return this.BaseModel.countDocuments(where || {})
+    }
     list(where) {
         return this.BaseModel.find(where || {})
     }

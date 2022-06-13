@@ -2,10 +2,47 @@ const hs = require('http-status')
 const ManufacturerService = require('../services/ManufacturerService')
 const ProductService = require('../services/ProductService')
 
+async function searchFunction(req, res, categories=undefined){
+    let where = {}
+    if (categories){
+        where = {'categories': {'$in': categories}}
+    }
+
+    const start = req.params.start
+    const count = req.params.count
+    let documentCount = 0
+
+    if (start == 0){
+        documentCount = await ManufacturerService.count()
+
+        if (documentCount == 0){
+            res.status(hs.NOT_FOUND).send({message: 'No manufacturer found'})
+            return
+        }
+    }
+
+    ManufacturerService.list(where).skip(start).limit(count)
+        .then(manufacturerList => {
+            if (!manufacturerList){
+                res.status(hs.NOT_FOUND).send({message: 'No manufacturer found'})
+                return
+            }
+
+            const ret = {
+                totalCount: documentCount,
+                manufacturerList: manufacturerList
+            }
+            
+            res.status(hs.OK).send(ret)
+        })
+        .catch(err => {
+            console.log(err)
+            res.status(hs.INTERNAL_SERVER_ERROR).send({error: err})
+        })
+}
 
 class ManufacturerController {
     
-
     updateManufacturer(req, res){
         ManufacturerService.findByUser(req.user)
             .then(manufacturer => {
@@ -135,6 +172,17 @@ class ManufacturerController {
                 res.status(hs.INTERNAL_SERVER_ERROR).send(err)
             })
     }    
+
+    async search(req, res){
+        let categories = req.params.categories
+
+        if (!categories){
+            await searchFunction(req, res)
+        } else {
+            categories = categories.split(',')
+            await searchFunction(req, res, categories)
+        }
+    }
 }
 
 
