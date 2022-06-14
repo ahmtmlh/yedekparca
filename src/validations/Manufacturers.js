@@ -3,7 +3,7 @@ Joi.objectId = require('joi-objectid')(Joi)
 
 class ManufacturerValidations{
     constructor(){
-    
+        
     }
 }
 

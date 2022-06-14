@@ -1,15 +1,11 @@
 const express = require('express')
 const fileUpload = require('express-fileupload')
 const cors = require('cors')
-
 const config = require('./config')
 const loaders = require('./loaders')
 const {UserRoutes, ChatRoutes, ManufacturerRoutes, ProductRoutes} = require('./routes')
-
-// I suspect this will not be required once the chat route is exported, which exports chat service, which export 
-// chat model
-const ChatModel = require('./models/Chat')
-
+const errorHandler = require('./middlewares/errorHandler')
+const ApiError = require('./errors/ApiError')
 
 config()
 loaders()
@@ -33,10 +29,11 @@ app.listen(process.env.PORT, () => {
     app.use('/product', ProductRoutes)
 
     app.use((req, res, next) => {
-        const error = new Error('No endpoint is found');
-        error.status = 404;
+        const error = new ApiError('No endpoint is found', 404);
         next(error);
     });
+
+    app.use(errorHandler)
 
 })
 
