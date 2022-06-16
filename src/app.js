@@ -4,7 +4,7 @@ const cors = require('cors')
 const config = require('./config')
 const loaders = require('./loaders')
 const {UserRoutes, ChatRoutes, ManufacturerRoutes, ProductRoutes} = require('./routes')
-const errorHandler = require('./middlewares/errorHandler')
+const {errorHandler} = require('./middlewares/errorHandler')
 const ApiError = require('./errors/ApiError')
 
 config()

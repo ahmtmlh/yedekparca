@@ -2,24 +2,28 @@ const Mongoose = require('mongoose')
 
 const OfferSchema = new Mongoose.Schema(
     {
-        offer_name: String,
-        offer_description: String,
-        from_user_id: {
+        name: String,
+        description: String,
+        company: {
             type: Mongoose.Types.ObjectId,
-            ref: 'user'
+            ref: 'company'
         },
-        to_manufacturer_id: {
+        manufacturer: {
             type: Mongoose.Types.ObjectId,
             ref: 'manufacturer'
         },
-        offer_type: String,
+        type: String,
         attachments: [String],
-        product_id: {
+        product: {
             type: Mongoose.Types.ObjectId,
             ref: 'product'
         },
-        created_at: Date,
+        chat:{
+            type: Mongoose.Types.ObjectId,
+            ref: 'chat'
+        },
         is_viewed: Boolean,
+        price: Number
     },
     { timestamps: true, versionKey: false }
 )

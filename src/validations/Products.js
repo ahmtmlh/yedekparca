@@ -29,10 +29,17 @@ const productSchema = Joi.object(
     }
 )
 
+const productIdSchema = Joi.object(
+    {
+        id: Joi.objectId().required()
+    }
+)
+
 class ProductValidations{
     constructor(){
         this.addProductSchema = productSchema
         this.updateProductSchema = productSchema
+        this.productIdSchema = productIdSchema
     }
 }
 

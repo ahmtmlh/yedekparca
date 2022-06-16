@@ -88,7 +88,7 @@ class ProductController{
                                     return
                                 }
                 
-                                res.status(hs.OK).send({message: 'Update product is successful'})
+                                res.status(hs.OK).send(updatedProduct)
                             })
                             .catch(err => {
                                 res.status(hs.INTERNAL_SERVER_ERROR).send({error: err})

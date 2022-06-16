@@ -5,9 +5,6 @@ class ApiError extends Error{
         this.status = status
     }
 
-    constructor(message){
-        this(message, 500)
-    }
 }
 
 module.exports = ApiError

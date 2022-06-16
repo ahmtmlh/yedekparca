@@ -1,5 +1,5 @@
 const hs = require('http-status')
-const {passwordToHash, generateJWTAccessToken, generateJWTRefreshToken} = require('../scripts/utils')
+const {passwordToHash, generateJWTAccessToken, generateJWTRefreshToken} = require('../scripts/utils/jwtutils')
 const UserService = require('../services/UserService')
 const ManufacturerService = require('../services/ManufacturerService')
 const UserTypes = require('../constants/UserType')
